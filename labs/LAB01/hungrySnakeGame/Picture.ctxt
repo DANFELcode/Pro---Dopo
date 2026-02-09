@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Picture
+comment0.text=\r\n\ Clase\ Picture\ para\ mostrar\ im\u00E1genes\ en\ el\ canvas.\r\n
+comment1.params=filename\ x\ y
+comment1.target=Picture(java.lang.String,\ int,\ int)
+comment1.text=\r\n\ Constructor\ de\ Picture.\r\n\ @param\ filename\ Ruta\ del\ archivo\ de\ imagen\r\n\ @param\ x\ Posici\u00F3n\ horizontal\r\n\ @param\ y\ Posici\u00F3n\ vertical\r\n
+comment2.params=
+comment2.target=void\ makeVisible()
+comment2.text=\r\n\ Hace\ visible\ la\ imagen.\r\n
+comment3.params=
+comment3.target=void\ makeInvisible()
+comment3.text=\r\n\ Hace\ invisible\ la\ imagen.\r\n
+comment4.params=
+comment4.target=void\ draw()
+comment4.text=\r\n\ Dibuja\ la\ imagen\ en\ el\ canvas.\r\n
+numComments=5

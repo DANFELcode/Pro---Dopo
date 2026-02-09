@@ -1,0 +1,26 @@
+#BlueJ class context
+comment0.target=Snake
+comment1.params=row\ column
+comment1.target=Snake(int,\ int)
+comment10.params=
+comment10.target=void\ makeVisible()
+comment11.params=
+comment11.target=void\ makeInvisible()
+comment2.params=direction
+comment2.target=void\ move(java.lang.String)
+comment3.params=
+comment3.target=int\ haComido()
+comment4.params=numeroCuadrado
+comment4.target=void\ reposicionarComida(int)
+comment5.params=
+comment5.target=int[]\ head()
+comment6.params=
+comment6.target=int[]\ tail()
+comment7.params=dir
+comment7.target=void\ grow(java.lang.String)
+comment7.text=\r\n\ La\ serpiente\ crece\ manteniendo\ la\ cola\ en\ su\ lugar\r\n
+comment8.params=
+comment8.target=boolean\ isOK()
+comment9.params=
+comment9.target=int\ length()
+numComments=12
