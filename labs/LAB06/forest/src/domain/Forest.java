@@ -316,7 +316,6 @@ public class Forest implements Serializable{
     }
     
     public void _import(File file) throws ForestException {
-        // Limpieza previa del bosque
         for (int r = 0; r < SIZE; r++) {
             for (int c = 0; c < SIZE; c++) places[r][c] = null;
         }
@@ -331,14 +330,12 @@ public class Forest implements Serializable{
 
                 String[] parts = line.split("[,\\s]+");
                 
-                // 1. Validación de cantidad de datos
                 if (parts.length < 3) {
                     throw new ForestException("Línea " + lineNum + ": Formato incompleto. Se esperaba 'Tipo Fila, Columna'.");
                 }
 
                 try {
                     String type = parts[0];
-                    // 2. Validación de números (Aquí es donde fallaba tu mensaje)
                     int r;
                     int c;
                     try {
@@ -347,13 +344,11 @@ public class Forest implements Serializable{
                     } catch (NumberFormatException e) {
                         throw new ForestException("Línea " + lineNum + ": Las coordenadas deben ser enteros (se encontró '" + parts[1] + "' o '" + parts[2] + "').");
                     }
-
-                    // 3. Validación de límites
+                    
                     if (r < 0 || r >= SIZE || c < 0 || c >= SIZE) {
                         throw new ForestException("Línea " + lineNum + ": Coordenadas fuera de rango [0-24].");
                     }
 
-                    // 4. Creación de objetos con validación de tipo
                     switch (type) {
                         case "Tree": new Tree(this, r, c); break;
                         case "Squirrel": new Squirrel(this, r, c); break;
@@ -364,7 +359,6 @@ public class Forest implements Serializable{
                             throw new ForestException("Línea " + lineNum + ": La clase '" + type + "' no es reconocida.");
                     }
                 } catch (ForestException e) {
-                    // Propagamos nuestra propia excepción para que no se pierda el detalle
                     throw e; 
                 }
             }
