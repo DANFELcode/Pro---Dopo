@@ -1,7 +1,7 @@
 package domain;
 
 import java.io.*;
-
+import java.lang.reflect.*;
 
 /**
  * Forest
@@ -12,7 +12,7 @@ import java.io.*;
  * @author Daniel Felipe Sua y Juan David Munar
  */
 public class Forest implements Serializable{
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     static private int SIZE = 25;
     private Thing[][] places;
     
@@ -32,7 +32,7 @@ public class Forest implements Serializable{
 
     /**
      * Obtiene el tamaño de un lado de la cuadrícula del bosque.
-     * * @return el número de filas o columnas (SIZE)
+     * @return el número de filas o columnas (SIZE)
      */
     public int getSize() {
         return SIZE;
@@ -40,7 +40,7 @@ public class Forest implements Serializable{
 
     /**
      * Obtiene el elemento ubicado en una posición específica del bosque.
-     * * @param r la fila a consultar
+     * @param r la fila a consultar
      * @param c la columna a consultar
      * @return el objeto Thing en esa posición, o null si está vacía
      */
@@ -50,7 +50,7 @@ public class Forest implements Serializable{
 
     /**
      * Coloca un elemento en una posición específica del bosque.
-     * * @param r la fila destino
+     * @param r la fila destino
      * @param c la columna destino
      * @param e el objeto Thing a ubicar en la matriz
      */
@@ -90,7 +90,7 @@ public class Forest implements Serializable{
     /**
      * Cuenta cuántos vecinos inmediatos (adyacentes o diagonales) son
      * exactamente de la misma clase que el elemento en la posición dada.
-     * * @param r la fila del elemento central
+     * @param r la fila del elemento central
      * @param c la columna del elemento central
      * @return el número de vecinos idénticos
      */
@@ -112,7 +112,7 @@ public class Forest implements Serializable{
 
     /**
      * Verifica si una celda específica está completamente vacía (null).
-     * * @param r la fila a verificar
+     * @param r la fila a verificar
      * @param c la columna a verificar
      * @return true si la celda está dentro del bosque y no contiene ningún objeto
      */
@@ -122,7 +122,7 @@ public class Forest implements Serializable{
         
     /**
      * Verifica si unas coordenadas dadas se encuentran dentro de los límites de la matriz.
-     * * @param r la fila a verificar
+     * @param r la fila a verificar
      * @param c la columna a verificar
      * @return true si las coordenadas son válidas dentro del tamaño del bosque
      */
@@ -143,7 +143,7 @@ public class Forest implements Serializable{
             }
         }
     }
-    
+
     public void open00(File file) throws ForestException {
         throw new ForestException(ForestException.ABRIR + " Archivo " + file.getName());
     }
@@ -160,12 +160,9 @@ public class Forest implements Serializable{
         throw new ForestException(ForestException.EXPORTARCOMO + " Archivo " + file.getName());
     }
     
-    //implementación real
-    
     /**
      * Guarda el estado completo del forest en un archivo binario (.dat)
      * usando serialización de objetos Java.
-     *
      * @param file archivo destino (extensión .dat)
      * @throws ForestException si ocurre cualquier error de E/S
      */
@@ -181,7 +178,6 @@ public class Forest implements Serializable{
     /**
      * Carga el estado de un forest desde un archivo binario (.dat),
      * reemplazando la cuadrícula actual.
-     *
      * @param file archivo origen (extensión .dat)
      * @throws ForestException si ocurre cualquier error de E/S o de formato
      */
@@ -195,62 +191,11 @@ public class Forest implements Serializable{
         }
     }
     
-    
     /**
-     * Guarda el estado del forest en un archivo .dat con manejo
-     * detallado de excepciones.
+     * Exporta el estado actual a un archivo de texto con un mensaje de error general.
+     * @param file archivo destino
+     * @throws ForestException si ocurre un error en la exportación
      */
-    public void saveAs(File file) throws ForestException {
-        try (ObjectOutputStream oos =
-                 new ObjectOutputStream(new FileOutputStream(file))) {
-            oos.writeObject(this);
-        } catch (FileNotFoundException e) {
-            throw new ForestException(
-                "No se puede crear el archivo '" + file.getName() +
-                "'. Verifique que la ruta exista y tenga permisos de escritura.");
-        } catch (SecurityException e) {
-            throw new ForestException(
-                "Permiso denegado al intentar guardar '" + file.getName() + "'.");
-        } catch (IOException e) {
-            throw new ForestException(
-                "Error inesperado al guardar '" + file.getName() +
-                "': " + e.getMessage());
-        }
-    }
-
-    /**
-     * Carga el estado del forest desde un archivo .dat con manejo
-     * detallado de excepciones.
-     */
-    public void open(File file) throws ForestException {
-        try (ObjectInputStream ois =
-                 new ObjectInputStream(new FileInputStream(file))) {
-            Forest loaded = (Forest) ois.readObject();
-            this.places = loaded.places;
-        } catch (FileNotFoundException e) {
-            throw new ForestException(
-                "El archivo '" + file.getName() + "' no existe o no se encontró.");
-        } catch (InvalidClassException e) {
-            throw new ForestException(
-                "El archivo '" + file.getName() +
-                "' no es compatible con la versión actual del forest " +
-                "(serialVersionUID no coincide).");
-        } catch (StreamCorruptedException e) {
-            throw new ForestException(
-                "El archivo '" + file.getName() +
-                "' está corrupto o no es un archivo .dat válido.");
-        } catch (ClassNotFoundException e) {
-            throw new ForestException(
-                "El archivo '" + file.getName() +
-                "' contiene clases que no existen en el proyecto.");
-        } catch (IOException e) {
-            throw new ForestException(
-                "Error inesperado al abrir '" + file.getName() +
-                "': " + e.getMessage());
-        }
-    }
-    
-    
     public void exportAs01 (File file) throws ForestException {
         try (PrintWriter out = new PrintWriter(new FileWriter(file))) {
             for (int r = 0; r < SIZE; r++) {
@@ -266,6 +211,11 @@ public class Forest implements Serializable{
         }
     }
     
+    /**
+     * Importa elementos desde un archivo de texto con un mensaje de error general.
+     * @param file archivo origen
+     * @throws ForestException si ocurre un error en la importación
+     */
     public void _import01 (File file) throws ForestException {
         for (int r = 0; r < SIZE; r++) {
             for (int c = 0; c < SIZE; c++) {
@@ -297,7 +247,73 @@ public class Forest implements Serializable{
         }
     }
     
-    public void exportAs(File file) throws ForestException {
+    
+    /**
+     * Guarda el estado del forest en un archivo .dat con manejo
+     * detallado de excepciones.
+     * @param file archivo destino
+     * @throws ForestException si el archivo no existe, no hay permisos o hay error de E/S
+     */
+    public void saveAs(File file) throws ForestException {
+        try (ObjectOutputStream oos =
+                 new ObjectOutputStream(new FileOutputStream(file))) {
+            oos.writeObject(this);
+        } catch (FileNotFoundException e) {
+            throw new ForestException(
+                "No se puede crear el archivo '" + file.getName() +
+                "'. Verifique que la ruta exista y tenga permisos de escritura.");
+        } catch (SecurityException e) {
+            throw new ForestException(
+                "Permiso denegado al intentar guardar '" + file.getName() + "'.");
+        } catch (IOException e) {
+            throw new ForestException(
+                "Error inesperado al guardar '" + file.getName() +
+                "': " + e.getMessage());
+        }
+    }
+
+    /**
+     * Carga el estado del forest desde un archivo .dat con manejo
+     * detallado de excepciones.
+     * @param file archivo origen
+     * @throws ForestException si el archivo no existe, está corrupto o es incompatible
+     */
+    public void open(File file) throws ForestException {
+        try (ObjectInputStream ois =
+                 new ObjectInputStream(new FileInputStream(file))) {
+            Forest loaded = (Forest) ois.readObject();
+            this.places = loaded.places;
+        } catch (FileNotFoundException e) {
+            throw new ForestException(
+                "El archivo '" + file.getName() + "' no existe o no se encontró.");
+        } catch (InvalidClassException e) {
+            throw new ForestException(
+                "El archivo '" + file.getName() +
+                "' no es compatible con la versión actual del forest " +
+                "(serialVersionUID no coincide).");
+        } catch (StreamCorruptedException e) {
+            throw new ForestException(
+                "El archivo '" + file.getName() +
+                "' está corrupto o no es un archivo .dat válido.");
+        } catch (ClassNotFoundException e) {
+            throw new ForestException(
+                "El archivo '" + file.getName() +
+                "' contiene clases que no existen en el proyecto.");
+        } catch (IOException e) {
+            throw new ForestException(
+                "Error inesperado al abrir '" + file.getName() +
+                "': " + e.getMessage());
+        }
+    }
+    
+    
+    
+    /**
+     * Exporta el estado actual a un archivo de texto con manejo detallado de excepciones.
+     * @param file archivo destino
+     * @throws ForestException si hay problemas de escritura o permisos
+     */
+    public void exportAs02(File file) throws ForestException {
         try (PrintWriter out = new PrintWriter(new FileWriter(file))) {
             for (int r = 0; r < SIZE; r++) {
                 for (int c = 0; c < SIZE; c++) {
@@ -315,7 +331,12 @@ public class Forest implements Serializable{
         }
     }
     
-    public void _import(File file) throws ForestException {
+    /**
+     * Importa elementos desde un archivo de texto con validación línea por línea.
+     * @param file archivo origen
+     * @throws ForestException si el formato es inválido, coordenadas fuera de rango o clase desconocida
+     */
+    public void _import02(File file) throws ForestException {
         for (int r = 0; r < SIZE; r++) {
             for (int c = 0; c < SIZE; c++) places[r][c] = null;
         }
@@ -369,5 +390,86 @@ public class Forest implements Serializable{
         }
     }
     
+   //BONO
+   //A 
+  
+    /**
+     * 
+     */
+    public void _import03() {
+        
+    }
+    
+    
+    
+   //B
+    
+    /**
+     * Exporta dinámicamente el estado del bosque a un archivo de texto usando reflexión.
+     * @param file archivo destino
+     * @throws ForestException si ocurre un error de exportación
+     */
+    public void exportAs(File file) throws ForestException {
+        try (PrintWriter out = new PrintWriter(new FileWriter(file))) {
+            for (int r = 0; r < SIZE; r++) {
+                for (int c = 0; c < SIZE; c++) {
+                    Thing thing = places[r][c];
+                    if (thing != null) {
+                        String className = thing.getClass().getSimpleName();
+                        out.println(className + " " + r + ", " + c);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new ForestException("Error al exportar a '" + file.getName() + "': " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Importa elementos dinámicamente desde un archivo de texto usando reflexión.
+     * @param file archivo origen
+     * @throws ForestException si el formato es inválido, clase no existe en dominio o error de instanciación
+     */
+    public void _import(File file) throws ForestException {
+        try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+            for (int r = 0; r < SIZE; r++) {
+                for (int c = 0; c < SIZE; c++) places[r][c] = null;
+            }
+
+            String line;
+            int lineNum = 0;
+            while ((line = in.readLine()) != null) {
+                lineNum++;
+                line = line.trim();
+                if (line.isEmpty()) continue;
+
+                String[] parts = line.split("[,\\s]+");
+                if (parts.length < 3) throw new ForestException("Línea " + lineNum + ": Formato incompleto.");
+
+                try {
+                    String type = parts[0];
+                    int r = Integer.parseInt(parts[1]);
+                    int c = Integer.parseInt(parts[2]);
+
+                    if (r < 0 || r >= SIZE || c < 0 || c >= SIZE) {
+                        throw new ForestException("Línea " + lineNum + ": Coordenadas fuera de rango.");
+                    }
+
+                    Class<?> cls = Class.forName("domain." + type);                 
+                    Constructor<?> constructor = cls.getConstructor(Forest.class, int.class, int.class);
+                    constructor.newInstance(this, r, c);
+
+                } catch (ClassNotFoundException e) {
+                    throw new ForestException("Línea " + lineNum + ": La clase '" + parts[0] + "' no existe en el dominio.");
+                } catch (NoSuchMethodException e) {
+                    throw new ForestException("Línea " + lineNum + ": La clase '" + parts[0] + "' no tiene el constructor requerido (Forest, int, int).");
+                } catch (Exception e) {
+                    throw new ForestException("Línea " + lineNum + ": Error al crear el objeto: " + e.getMessage());
+                }
+            }
+        } catch (IOException e) {
+            throw new ForestException("Error de lectura: " + e.getMessage());
+        }
+    }
     
 }
