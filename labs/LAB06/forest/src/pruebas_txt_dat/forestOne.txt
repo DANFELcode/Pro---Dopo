@@ -1,0 +1,12 @@
+Tree 0, 0
+Tree 0, 24
+Squirrel 12, 12
+Squirrel 13, 13
+Mushroom 5, 5
+Mushroom 5, 6
+Pine 20, 10
+Pine 21, 10
+Shadow 10, 0
+Shadow 10, 1
+Tree 23, 0
+Tree 23, 24
